@@ -1,0 +1,14 @@
+
+<form method='GET' function='/articles'>
+
+<h1>Welcome! Chose an article.</h1>
+
+   <%@articles.collect do |a|%>
+   
+     <label for="#{a.id}"><%=a.title%></label>
+     <input type="radio" id="#{a.id}" name="#{a.id}">
+   <%end%>
+
+  <input type="submit" id="Submit">
+
+</form>
