@@ -14,24 +14,40 @@ class ApplicationController < Sinatra::Base
      erb :index
    else  
     redirect "articles/#{params.keys[0]}"
-    #binding.pry
    end
   end
 
   get '/articles/new' do
-     erb :new
+    erb :new
   end 
 
   post '/articles' do
-    binding.pry
-    @new_article = Article.create(params[:title], params[:content])
-    
+    @new_article = Article.create(params)
+    redirect "/articles/#{@new_article.id}"
   end
 
   get '/articles/:id' do
-    #binding.pry
-    @requested_article = Article.find_by_id(params[:id])
+    @article = Article.find_by_id(params[:id])
     erb :show
   end
+
+  get '/articles/:id/edit' do
+    @article_to_edit = Article.find_by_id(params[:id])
+    erb :edit
+  end
+
+  patch '/articles/:id' do
+     @article = Article.find_by_id(params[:id])
+     @article.title = params[:title]
+     @article.content = params[:content]
+     @article.save 
+     
+     erb :show
+  end 
+
+  delete '/articles/:id' do 
+     Article.find_by_id(params[:id]).delete
+  end 
+
 
 end
